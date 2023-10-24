@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using UnityEngine;
 
-public class mario : MonoBehaviour
+public class mario: MonoBehaviour
 {
     public float speed = 10f;
     private Rigidbody2D rb;
     public float horizontal;
     private bool flip = true;
     public Animator animator;
+    public int JumpForce = 10;
 
     void Start()
     {
@@ -29,6 +30,14 @@ public class mario : MonoBehaviour
             transform.localScale *= new Vector2(-1, 1);
             flip = !flip;
         }
+        Jump();
     }
 
+    void Jump()
+    {
+        if (Input.GetKeyDown(KeyCode.Space)) 
+        {
+            rb.velocity = new Vector2(rb.velocity.x, JumpForce);
+        }
+    }
 }
