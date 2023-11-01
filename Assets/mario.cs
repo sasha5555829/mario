@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics.Tracing;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class mario: MonoBehaviour
@@ -12,11 +14,20 @@ public class mario: MonoBehaviour
     private bool flip = true;
     public Animator animator;
     public int JumpForce = 10;
+    public bool onGround;
+    public LayerMask Ground;
+    public Transform graundCheck;
+    private float GroundCheckRadius;
+
+    private Vector3 RespawnPoint;
+    public GameObject deadZone;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        GroundCheckRadius = graundCheck.GetComponent<CircleCollider2D>().radius;
+        RespawnPoint = transform.position;
     }
 
     void Update()
@@ -31,13 +42,29 @@ public class mario: MonoBehaviour
             flip = !flip;
         }
         Jump();
+        CheckingGround();
+
+        deadZone.transform.position = new Vector2(transform.position.x, deadZone.transform.position.y); 
     }
 
     void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) 
+        if (onGround && Input.GetKeyDown(KeyCode.Space)) 
         {
             rb.velocity = new Vector2(rb.velocity.x, JumpForce);
+        }
+    }
+
+    void CheckingGround() 
+    {
+        onGround = Physics2D.OverlapCircle(graundCheck.position, GroundCheckRadius, Ground);
+        animator.SetFloat("moveY", Mathf.Abs(rb.velocity.y));
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Untagged")
+        {
+            transform.position = RespawnPoint;
         }
     }
 }
