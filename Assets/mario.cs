@@ -64,7 +64,7 @@ public class mario: MonoBehaviour
     {
         if (collision.tag == "Untagged")
         {
-            transform.position = RespawnPoint;
+            transform.position = RsespawnPoint;
         }
     }
 }
