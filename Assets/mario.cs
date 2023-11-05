@@ -12,22 +12,22 @@ public class mario: MonoBehaviour
     private Rigidbody2D rb;
     public float horizontal;
     private bool flip = true;
-    //public Animator animator;
+    public Animator animator;
     public int JumpForce = 10;
     public bool onGround;
     public LayerMask Ground;
     public Transform GroundCheck;
     private float GroundCheckRadius;
 
-  //  private Vector3 RespawnPoint;
-  //  public GameObject deadZone;
+    private Vector3 RespawnPoint;
+    public GameObject deadZone;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        //animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
         GroundCheckRadius = GroundCheck.GetComponent<CircleCollider2D>().radius;
-       // RespawnPoint = transform.position;
+        RespawnPoint = transform.position;
     }
 
     void Update()
@@ -35,7 +35,7 @@ public class mario: MonoBehaviour
         horizontal = Input.GetAxis("Horizontal");
 
         rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
-        //animator.SetFloat("moveX",Math.Abs(horizontal));
+        animator.SetFloat("moveX",Math.Abs(horizontal));
         if ((horizontal > 0 && !flip) || (horizontal < 0 && flip))
         {
             transform.localScale *= new Vector2(-1, 1);
@@ -44,7 +44,7 @@ public class mario: MonoBehaviour
         Jump();
         CheckingGround();
 
-       // deadZone.transform.position = new Vector2(transform.position.x, deadZone.transform.position.y); 
+        deadZone.transform.position = new Vector2(transform.position.x, deadZone.transform.position.y); 
     }
 
     void Jump()
@@ -58,13 +58,17 @@ public class mario: MonoBehaviour
     void CheckingGround() 
     {
         onGround = Physics2D.OverlapCircle(GroundCheck.position, GroundCheckRadius, Ground);
-        //animator.SetFloat("moveY", Mathf.Abs(rb.velocity.y));
+        animator.SetFloat("moveY", Mathf.Abs(rb.velocity.y));
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Untagged")
+        if (collision.tag == "deadzone")
         {
-         //   transform.position = RespawnPoint;
+            transform.position = RespawnPoint;
+        }
+        else if (collision.tag == "checkpoint")
+        {
+            RespawnPoint = transform.position;
         }
     }
 }
