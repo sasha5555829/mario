@@ -13,22 +13,30 @@ public class health : MonoBehaviour
         currentHealth = startingHealth;
     }
 
-    public void TakeDamage(float _value)
+    public void TakeDamage(float _damage)
     {
-        currentHealth = Math.Clamp(currentHealth - _value, 0, startingHealth);
+        currentHealth = Mathf.Clamp(currentHealth - _damage, 0, startingHealth);
 
         if (currentHealth > 0)
         {
-            //b
+            //player live
         }
         else
         {
-            //a
+            Destroy(gameObject);
         }
     }
 
-    public void addHealth(float _value)
+    public void addHeath(float _value)
     {
-        currentHealth = Math.Clamp(currentHealth + _value, 0, startingHealth);
+        currentHealth = Mathf.Clamp(currentHealth + _value, 0, startingHealth);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            TakeDamage(0);
+        }
     }
 }  
