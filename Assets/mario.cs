@@ -6,7 +6,7 @@ using System.Diagnostics.Tracing;
 using System.Security.Cryptography;
 using UnityEngine;
 
-public class mario: MonoBehaviour
+public class mario : MonoBehaviour
 {
     public float speed = 10f;
     private Rigidbody2D rb;
@@ -35,7 +35,7 @@ public class mario: MonoBehaviour
         horizontal = Input.GetAxis("Horizontal");
 
         rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
-        animator.SetFloat("moveX",Math.Abs(horizontal));
+        animator.SetFloat("moveX", Math.Abs(horizontal));
         if ((horizontal > 0 && !flip) || (horizontal < 0 && flip))
         {
             transform.localScale *= new Vector2(-1, 1);
@@ -44,18 +44,18 @@ public class mario: MonoBehaviour
         Jump();
         CheckingGround();
 
-        deadZone.transform.position = new Vector2(transform.position.x, deadZone.transform.position.y); 
+        deadZone.transform.position = new Vector2(transform.position.x, deadZone.transform.position.y);
     }
 
     void Jump()
     {
-        if (onGround && Input.GetKeyDown(KeyCode.Space)) 
+        if (onGround && Input.GetKeyDown(KeyCode.Space))
         {
             rb.velocity = new Vector2(rb.velocity.x, JumpForce);
         }
     }
 
-    void CheckingGround() 
+    void CheckingGround()
     {
         onGround = Physics2D.OverlapCircle(GroundCheck.position, GroundCheckRadius, Ground);
         animator.SetFloat("moveY", Mathf.Abs(rb.velocity.y));
@@ -69,6 +69,23 @@ public class mario: MonoBehaviour
         else if (collision.tag == "checkpoint")
         {
             RespawnPoint = transform.position;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.name.Equals("platform"))
+        {
+            this.transform.parent = collision.transform;
+        }
+    }
+
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.name.Equals("platform"))
+        {
+            this.transform.parent = null;
         }
     }
 }

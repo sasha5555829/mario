@@ -12,13 +12,20 @@ public class Enemy : MonoBehaviour
     private float leftEdge;
     private float rightEdge;
 
+    private int Health = 2;
+
+
     private void Awake()
     {
         leftEdge = transform.position.x - moveDistance;
         rightEdge = transform.position.x + moveDistance;
     }
-
     private void Update()
+    {
+        moving();
+        health();
+    }
+    void moving()
     {
         if (movingLeft)
         {
@@ -43,12 +50,22 @@ public class Enemy : MonoBehaviour
             }
         }
     }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player")
         {
             collision.GetComponent<health>().TakeDamage(damage);
+        }
+        if (collision.tag == "Bullet")
+        {
+            Health -= 1;
+        }
+    }
+    void health()
+    {
+        if (Health <= 0)
+        {
+            gameObject.SetActive(false);
         }
     }
 }
