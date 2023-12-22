@@ -11,8 +11,8 @@ public class Enemy : MonoBehaviour
     private bool movingLeft;
     private float leftEdge;
     private float rightEdge;
-
     private int Health = 2;
+    public GameObject DroppedCoin;
 
 
     private void Awake()
@@ -52,7 +52,11 @@ public class Enemy : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.tag == "golova")
+        {
+            Health -= 2;
+        }
+        else if (collision.tag == "Player")
         {
             collision.GetComponent<health>().TakeDamage(damage);
         }
@@ -66,6 +70,7 @@ public class Enemy : MonoBehaviour
         if (Health <= 0)
         {
             gameObject.SetActive(false);
+            Instantiate(DroppedCoin, transform.position, transform.rotation);
         }
     }
 }
