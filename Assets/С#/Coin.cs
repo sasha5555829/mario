@@ -20,6 +20,7 @@ public class Coin : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            MoneyText.coin += 1;
             Destroy(gameObject);
         }
     }

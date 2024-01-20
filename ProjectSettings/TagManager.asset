@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - Bullet
   - golova
+  - head
   layers:
   - Default
   - TransparentFX
