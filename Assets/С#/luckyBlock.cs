@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class block : MonoBehaviour
+public class luckyBlock : MonoBehaviour
 {
+    public Transform objects;
 
-    public Transform kusok;
-    
 
     private void Start()
     {
@@ -14,10 +13,10 @@ public class block : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "head" && PlayerPrefs.GetInt("Big") == 1)
+        if (collision.gameObject.tag == "head")
         {
             gameObject.SetActive(false);
-            Instantiate(kusok, transform.position, transform.rotation);
+            Instantiate(objects, transform.position, transform.rotation);
         }
     }
 }

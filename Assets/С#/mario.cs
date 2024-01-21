@@ -28,6 +28,7 @@ public class mario : MonoBehaviour
         animator = GetComponent<Animator>();
         GroundCheckRadius = GroundCheck.GetComponent<CircleCollider2D>().radius;
         RespawnPoint = transform.position;
+        PlayerPrefs.SetInt("Big", 0);
     }
 
     void Update()
